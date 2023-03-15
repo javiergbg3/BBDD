@@ -1,3 +1,14 @@
+
+DROP TABLE IF EXISTS Clientes;
+
+DROP TABLE IF EXISTS Oficinas;
+
+DROP TABLE IF EXISTS Cuentas;
+
+DROP TABLE IF EXISTS Titulares;
+
+DROP TABLE IF EXISTS Operaciones;
+
 -- Creación de tabla Clientes
 CREATE TABLE Clientes (
     DNI         VARCHAR(9) PRIMARY KEY,
@@ -38,11 +49,11 @@ CREATE TABLE Titulares (
 
 -- Creación de tabla Operaciones
 CREATE TABLE Operaciones (
-    id_operacion            SERIAL PRIMARY KEY,
+    id_operacion            INTEGER SERIAL PRIMARY KEY,
     fecha_hora              TIMESTAMP NOT NULL,
     cantidad                NUMERIC(10,2) NOT NULL,
-    numero_cuenta_origen    VARCHAR(20) REFERENCES Cuentas(numero_cuenta),
-    numero_cuenta_destino   VARCHAR(20) REFERENCES Cuentas(numero_cuenta),
+    numero_cuenta_origen    INTEGER REFERENCES Cuentas(numero_cuenta),
+    numero_cuenta_destino   INTEGER REFERENCES Cuentas(numero_cuenta),
     sucursal                INTEGER REFERENCES Oficinas(codigo_oficina),
     descripcion             VARCHAR(200),
     tipo_operacion          VARCHAR(15) NOT NULL,
