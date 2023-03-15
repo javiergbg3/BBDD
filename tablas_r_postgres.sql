@@ -38,7 +38,7 @@ CREATE TABLE Titulares (
 
 -- Creación de tabla Operaciones
 CREATE TABLE Operaciones (
-    id_operacion            INTEGER SERIAL PRIMARY KEY,
+    id_operacion            SERIAL PRIMARY KEY,
     fecha_hora              TIMESTAMP NOT NULL,
     cantidad                NUMERIC(10,2) NOT NULL,
     numero_cuenta_origen    VARCHAR(20) REFERENCES Cuentas(numero_cuenta),
