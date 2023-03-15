@@ -31,7 +31,7 @@ CREATE TABLE Oficinas (
 -- Creación de tabla Cuentas
 CREATE TABLE Cuentas (
     numero_cuenta   BIGINT PRIMARY KEY,
-    IBAN            VARCHAR(4) NOT NULL,
+    IBAN            VARCHAR(24) NOT NULL,
     fecha_creacion  DATE NOT NULL,
     saldo_actual    NUMERIC(10,2) DEFAULT 0.00,
     sucursal        BIGINT REFERENCES Oficinas(codigo_oficina),
