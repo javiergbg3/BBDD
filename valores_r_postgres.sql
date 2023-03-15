@@ -28,7 +28,7 @@ INSERT INTO Cuentas (numero_cuenta, IBAN, fecha_creacion, saldo_actual, sucursal
     (7890123456789012, 'ES6178901234567890123456', '2021-05-10', 25000.00, 1007, 'corriente'),
     (8901234567890123, 'ES6289012345678901234567', '2018-11-30', 8000.00, 1008, 'ahorro'),
     (9012345678901234, 'ES6390123456789012345678', '2019-07-12', 1000.00, 1009, 'corriente'),
-    (1123456789012345, 'ES6401234567890123456789', '2022-03-01', 15000.00, 1010, 'ahorro');
+    (1123456789010000, 'ES6401234567890123456789', '2022-03-01', 15000.00, 1010, 'ahorro');
 
 INSERT INTO Titulares (numero_cuenta, DNI_titular, interes) VALUES
     (1234567890123456, '34567890D', 1.50),
@@ -40,9 +40,9 @@ INSERT INTO Titulares (numero_cuenta, DNI_titular, interes) VALUES
     (7890123456789012, '12345678A', 1.75),
     (8901234567890123, '87654321B', 2.25),
     (9012345678901234, '34567890D', 1.50),
-    (1123456789012345, '12345678A', 1.25);
+    (1123456789010000, '12345678A', 1.25);
 
 INSERT INTO Operaciones (fecha_hora, cantidad, numero_cuenta_origen, numero_cuenta_destino, sucursal, descripcion, tipo_operacion) VALUES
     ('2023-03-15 10:30:00', 1000.00, 1234567890123456, 4567890123456789, 1001, 'Transferencia a cuenta de ahorros', 'transferencia'),
     ('2023-05-17 16:30:00', 800.00, 8901234567890123, NULL, 1004, 'Nomina', 'ingreso'),
-    ('2023-05-17 16:30:00', 50.00, 9012345678901234, NULL, 1008, NULL, 'retirada');
+    ('2023-04-29 09:30:00', 50.00, 9012345678901234, NULL, 1008, NULL, 'retirada');
