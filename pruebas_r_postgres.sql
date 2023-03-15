@@ -1,0 +1,1 @@
+SELECT cuentas.numero_cuenta FROM cuentas, Titulares, clientes WHERE dni = DNI_titular AND dni = 34567890D AND cuentas.numero_cuenta = Titulares.numero_cuenta;
