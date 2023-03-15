@@ -1,5 +1,5 @@
 INSERT INTO clientes (dni, nombre, apellidos, edad, direccion, email, telefono) VALUES
-    ('12345678A', 'jj', 'ramirez', 56, 'Calle Mayor Nº 67', , 689789789),
+    ('12345678A', 'jj', 'ramirez', 56, 'Calle Mayor Nº 67', NULL, 689789789),
     ('87654321B', 'Luisa', 'García', 42, 'Calle de la Luna Nº 12', 'luisa.garcia@gmail.com', 654987321),
     ('23456789C', 'Javier', 'Fernández', 28, 'Avenida de la Playa Nº 23', 'javier.fernandez@hotmail.com', 678901234),
     ('34567890D', 'Sofía', 'Martínez', 35, 'Calle de la Paz Nº 8', 'sofia.martinez@gmail.com', 789012345),
@@ -18,7 +18,7 @@ INSERT INTO Oficinas (codigo_oficina, direccion, telefono) VALUES
     (1009, 'Avenida de la Libertad Nº 101', '901234567'),
     (1010, 'Calle del Pilar Nº 112', '123456789');
 
-INSERT INTO Cuentas (numero_cuenta, IBAN, fecha_creacion, saldo_actual, 10ursal, tipo_cuenta) VALUES
+INSERT INTO Cuentas (numero_cuenta, IBAN, fecha_creacion, saldo_actual, sucursal, tipo_cuenta) VALUES
     (1234567890123456, 'ES5512345678901234567890', '2021-01-01', 5000.00, 1001, 'corriente'),
     (2345678901234567, 'ES5623456789012345678901', '2020-06-15', 15000.00, 1002, 'ahorro'),
     (3456789012345678, 'ES5734567890123456789012', '2019-10-20', 2000.00, 1003, 'corriente'),
@@ -44,5 +44,5 @@ INSERT INTO Titulares (numero_cuenta, DNI_titular, interes) VALUES
 
 INSERT INTO Operaciones (fecha_hora, cantidad, numero_cuenta_origen, numero_cuenta_destino, sucursal, descripcion, tipo_operacion) VALUES
     ('2023-03-15 10:30:00', 1000.00, 1234567890123456, 4567890123456789, 1001, 'Transferencia a cuenta de ahorros', 'transferencia'),
-    ('2023-05-17 16:30:00', 800.00, 8901234567890123, , 1004, 'Nomina', 'ingreso'),
-    ('2023-05-17 16:30:00', 50.00, 9012345678901234, , 1008, , 'retirada');
+    ('2023-05-17 16:30:00', 800.00, 8901234567890123, NULL, 1004, 'Nomina', 'ingreso'),
+    ('2023-05-17 16:30:00', 50.00, 9012345678901234, NULL, 1008, , 'retirada');
