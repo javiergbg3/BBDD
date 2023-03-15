@@ -1,13 +1,14 @@
 
-DROP TABLE IF EXISTS Clientes;
-
-DROP TABLE IF EXISTS Oficinas;
-
-DROP TABLE IF EXISTS Cuentas;
+DROP TABLE IF EXISTS Operaciones;
 
 DROP TABLE IF EXISTS Titulares;
 
-DROP TABLE IF EXISTS Operaciones;
+DROP TABLE IF EXISTS Cuentas;
+
+DROP TABLE IF EXISTS Oficinas;
+
+DROP TABLE IF EXISTS Clientes;
+
 
 -- Creación de tabla Clientes
 CREATE TABLE Clientes (
@@ -49,7 +50,7 @@ CREATE TABLE Titulares (
 
 -- Creación de tabla Operaciones
 CREATE TABLE Operaciones (
-    id_operacion            INTEGER SERIAL PRIMARY KEY,
+    id_operacion            SERIAL PRIMARY KEY,
     fecha_hora              TIMESTAMP NOT NULL,
     cantidad                NUMERIC(10,2) NOT NULL,
     numero_cuenta_origen    INTEGER REFERENCES Cuentas(numero_cuenta),
