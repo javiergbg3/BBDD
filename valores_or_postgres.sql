@@ -33,7 +33,7 @@ INSERT INTO Corriente (numero_cuenta, IBAN, fecha_creacion, saldo_actual, sucurs
     (901234567890123, 'ES6390123456789012345678', '2019-07-12', 1000.00, 1009);
 
 INSERT INTO Titulares (numero_cuenta, DNI_titular, interes) VALUES
-    (123456789012345, '34567890D', 1.50),
+    --(123456789012345, '34567890D', 1.50),
     (234567890123456, '87654321B', 1.25),
     (345678901234567, '23456789C', 1.75),
     (456789012345678, '34567890D', 2.00),
