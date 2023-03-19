@@ -70,10 +70,10 @@ CREATE TABLE Operaciones (
 
 -- Operacion Transferencia
 CREATE TABLE Transferencia (
-    numero_cuenta_destino   BIGINT REFERENCES Cuentas(numero_cuenta),
+    numero_cuenta_destino   BIGINT REFERENCES Cuentas(numero_cuenta)
 ) INHERITS (Operacion);
 
 -- Operacion Retirada_Ingreso
 CREATE TABLE Retirada_Ingreso (
-    sucursal                BIGINT REFERENCES Oficinas(codigo_oficina),
+    sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Operacion);
