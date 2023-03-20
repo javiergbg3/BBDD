@@ -50,9 +50,38 @@ CREATE TABLE Corriente (
 ) INHERITS (Cuentas);
 
 
+--Triger para inserción de datos en Titulares
+CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
+    BEFORE INSERT 
+    ON Titulares
+    FOR each ROW
+    EXECUTE comprobar_numeroCuenta();
+
+
+-- Función comprueba que exite el numero de cunta antes de añadirlo
+CREATE OR REPLACE FUNCTION comprobar_numeroCuenta()
+RETURN trigger AS 
+$BODY$
+BEGIN 
+    if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
+        RETURN NEW;
+    else
+        RETURN NULL;
+    end if;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
+    if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
+        RETURN NEW;
+    else
+        RETURN NULL;
+    end if;
+
 -- Creación de tabla Titulares
 CREATE TABLE Titulares (
-    numero_cuenta   BIGINT REFERENCES Cuentas(numero_cuenta),
+    numero_cuenta   BIGINT,
     DNI_titular     VARCHAR(9) REFERENCES Clientes(DNI),
     interes         NUMERIC(3,2) NOT NULL,  
     PRIMARY KEY (numero_cuenta, DNI_titular)
