@@ -104,7 +104,7 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
 CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger AS $BODY$
     BEGIN 
         if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino) 
-        OR EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen)then 
+        AND EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen)then 
             RETURN NEW;
         else
             RETURN NULL;
