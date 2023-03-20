@@ -68,14 +68,14 @@ CREATE TABLE Operaciones (
     id_operacion            SERIAL PRIMARY KEY,
     fecha_hora              TIMESTAMP NOT NULL,
     cantidad                NUMERIC(10,2) NOT NULL,
-    numero_cuenta_origen    BIGINT REFERENCES Cuentas(numero_cuenta),
+    numero_cuenta_origen    BIGINT,
     descripcion             VARCHAR(200)
 );
 
 
 -- Operacion Transferencia
 CREATE TABLE Transferencia (
-    numero_cuenta_destino   BIGINT REFERENCES Cuentas(numero_cuenta)
+    numero_cuenta_destino   BIGINT
 ) INHERITS (Operaciones);
 
 -- Operacion Retirada_Ingreso
@@ -83,12 +83,10 @@ CREATE TABLE Retirada_Ingreso (
     sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Operaciones);
 
--- Función comprueba que exite el numero de cunta antes de añadirlo
+-- Función comprueba que exite el numero de cunta antes de añadirlo de titulares
 CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
     BEGIN 
-        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) || 
-        (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen ) || 
-        (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
             RETURN NEW;
         else
             RETURN NULL;
@@ -98,8 +96,40 @@ $BODY$ LANGUAGE plpgsql;
 
 --Triger para inserción de datos en Titulares
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON titulares, Transferencia, Operacion
+    BEFORE INSERT ON titulares
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuenta();
 
+-- Función comprueba que exite el numero de cunta antes de añadirlo de trasferencia
+CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
+    BEGIN 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
+            RETURN NEW;
+        else
+            RETURN NULL;
+        end if;
+    END;
+$BODY$ LANGUAGE plpgsql;
 
+--Triger para inserción de datos en Trasferencia
+CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
+    BEFORE INSERT ON trasferencia
+    FOR EACH ROW
+    EXECUTE FUNCTION comprobar_numeroCuenta();
+
+-- Función comprueba que exite el numero de cunta antes de añadirlo de Opereciones
+CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
+    BEGIN 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen ) then 
+            RETURN NEW;
+        else
+            RETURN NULL;
+        end if;
+    END;
+$BODY$ LANGUAGE plpgsql;
+
+--Triger para inserción de datos en Operaciones
+CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
+    BEFORE INSERT ON Operaciones
+    FOR EACH ROW
+    EXECUTE FUNCTION comprobar_numeroCuenta();
