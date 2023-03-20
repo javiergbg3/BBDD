@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS Titulares;
 
 DROP TABLE IF EXISTS Corriente;
 
+DROP TABLE IF EXISTS Ahorro;
+
 DROP TABLE IF EXISTS Cuentas;
 
 DROP TABLE IF EXISTS Oficinas;
@@ -48,6 +50,9 @@ CREATE TABLE Cuentas (
 CREATE TABLE Corriente (
     sucursal        BIGINT NOT NULL REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Cuentas);
+
+-- Cuenta ahorro
+CREATE TABLE Ahorro () INHERITS (Cuentas);
 
 
 -- Creación de tabla Titulares

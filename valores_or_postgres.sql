@@ -18,7 +18,7 @@ INSERT INTO Oficinas (codigo_oficina, direccion, telefono) VALUES
     (1009, 'Avenida de la Libertad Nº 101', '901234567'),
     (1010, 'Calle del Pilar Nº 112', '123456789');
 
-INSERT INTO Cuentas (numero_cuenta, IBAN, fecha_creacion, saldo_actual) VALUES
+INSERT INTO Ahorro (numero_cuenta, IBAN, fecha_creacion, saldo_actual) VALUES
     (234567890123456, 'ES5623456789012345678901', '2020-06-15', 15000.00),
     (456789012345678, 'ES5845678901234567890123', '2022-02-28', 100000.00),
     (678901234567890, 'ES6067890123456789012345', '2020-12-01', 7500.00),
