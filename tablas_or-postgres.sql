@@ -83,6 +83,11 @@ CREATE TABLE Retirada_Ingreso (
     sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Operaciones);
 
+-- Operacion Ingreso
+CREATE TABLE Ingreso (
+    sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
+) INHERITS (Operaciones);
+
 -- Función comprueba que exite el numero de cunta antes de añadirlo de titulares
 CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
     BEGIN 
