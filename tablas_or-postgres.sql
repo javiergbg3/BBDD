@@ -54,7 +54,7 @@ CREATE TABLE Corriente (
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
     BEFORE INSERT ON Titulares
     FOR EACH ROW
-    EXECUTE comprobar_numeroCuenta();
+    EXECUTE FUNCTION comprobar_numeroCuenta();
 
 
 -- Función comprueba que exite el numero de cunta antes de añadirlo
