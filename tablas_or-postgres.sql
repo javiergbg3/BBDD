@@ -155,7 +155,7 @@ $BODY$ LANGUAGE plpgsql;
 
 --Triger para inserción de datos en Retirada
 CREATE OR REPLACE TRIGGER numero_cuenta_Retirada 
-    BEFORE INSERT ON Retirada_Ingreso
+    BEFORE INSERT ON Retirada
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuentaR();
 
@@ -172,6 +172,6 @@ $BODY$ LANGUAGE plpgsql;
 
 --Triger para inserción de datos en Ingreso
 CREATE OR REPLACE TRIGGER numero_cuenta_Ingreso 
-    BEFORE INSERT ON Retirada_Ingreso
+    BEFORE INSERT ON Ingreso
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuentaI();
