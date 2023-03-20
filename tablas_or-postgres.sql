@@ -103,7 +103,8 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
 -- Función comprueba que exite el numero de cunta antes de añadirlo de transferencia
 CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger AS $BODY$
     BEGIN 
-        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino) 
+        || EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen)then 
             RETURN NEW;
         else
             RETURN NULL;
@@ -120,7 +121,7 @@ CREATE OR REPLACE TRIGGER numero_cuenta_transferencia
 -- Función comprueba que exite el numero de cunta antes de añadirlo de Opereciones
 CREATE OR REPLACE FUNCTION comprobar_numeroCuentaOpe() RETURNS trigger AS $BODY$
     BEGIN 
-        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen ) then 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen) then 
             RETURN NEW;
         else
             RETURN NULL;
