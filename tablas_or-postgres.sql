@@ -1,5 +1,7 @@
 
-DROP TABLE IF EXISTS Retirada_Ingreso;
+DROP TABLE IF EXISTS Ingreso;
+
+DROP TABLE IF EXISTS Retirada;
 
 DROP TABLE IF EXISTS Transferencia;
 
