@@ -100,7 +100,7 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuenta();
 
--- Función comprueba que exite el numero de cunta antes de añadirlo de trasferencia
+-- Función comprueba que exite el numero de cunta antes de añadirlo de transferencia
 CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
     BEGIN 
         if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
@@ -111,9 +111,9 @@ CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
     END;
 $BODY$ LANGUAGE plpgsql;
 
---Triger para inserción de datos en Trasferencia
+--Triger para inserción de datos en Transferencia
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON trasferencia
+    BEFORE INSERT ON Transferencia
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuenta();
 
