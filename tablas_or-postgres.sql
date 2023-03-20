@@ -78,15 +78,6 @@ CREATE TABLE Retirada_Ingreso (
     sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Operaciones);
 
-
-
---Triger para inserción de datos en Titulares
-CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON titulares
-    FOR EACH ROW
-    EXECUTE FUNCTION comprobar_numeroCuenta();
-
-
 -- Función comprueba que exite el numero de cunta antes de añadirlo
 CREATE OR REPLACE FUNCTION comprobar_numeroCuenta()
 RETURN trigger AS 
@@ -107,3 +98,11 @@ LANGUAGE plpgsql;
     else
         RETURN NULL;
     end if;
+
+--Triger para inserción de datos en Titulares
+CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
+    BEFORE INSERT ON titulares
+    FOR EACH ROW
+    EXECUTE FUNCTION comprobar_numeroCuenta();
+
+
