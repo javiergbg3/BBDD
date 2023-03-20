@@ -79,7 +79,7 @@ CREATE TABLE Retirada_Ingreso (
 ) INHERITS (Operaciones);
 
 -- Función comprueba que exite el numero de cunta antes de añadirlo
-CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURN trigger AS $BODY$
+CREATE OR REPLACE FUNCTION comprobar_numeroCuenta() RETURNS trigger AS $BODY$
     BEGIN 
         if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
             RETURN NEW;
