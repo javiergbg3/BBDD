@@ -79,7 +79,7 @@ CREATE TABLE Transferencia (
 ) INHERITS (Operaciones);
 
 -- Operacion Retirada_Ingreso
-CREATE TABLE Retirada_Ingreso (
+CREATE TABLE Retirada (
     sucursal                BIGINT REFERENCES Oficinas(codigo_oficina)
 ) INHERITS (Operaciones);
 
