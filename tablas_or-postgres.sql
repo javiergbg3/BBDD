@@ -134,3 +134,20 @@ CREATE OR REPLACE TRIGGER numero_cuenta_Operaciones
     BEFORE INSERT ON Operaciones
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuentaOpe();
+
+-- Función comprueba que exite el numero de cunta antes de añadirlo de Retirada_Ingreso
+CREATE OR REPLACE FUNCTION comprobar_numeroCuentaRI() RETURNS trigger AS $BODY$
+    BEGIN 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen) then 
+            RETURN NEW;
+        else
+            RETURN NULL;
+        end if;
+    END;
+$BODY$ LANGUAGE plpgsql;
+
+--Triger para inserción de datos en Retirada_Ingreso
+CREATE OR REPLACE TRIGGER numero_cuenta_Retirada_Ingreso 
+    BEFORE INSERT ON Operaciones
+    FOR EACH ROW
+    EXECUTE FUNCTION comprobar_numeroCuentaRI();
