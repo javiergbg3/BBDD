@@ -81,7 +81,7 @@ CREATE TABLE Retirada_Ingreso (
 -- Función comprueba que exite el numero de cunta antes de añadirlo
 CREATE OR REPLACE FUNCTION comprobar_numeroCuenta()
 RETURN trigger AS 
-$BODY$
+$$
 BEGIN 
     if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
         RETURN NEW;
@@ -89,8 +89,8 @@ BEGIN
         RETURN NULL;
     end if;
 END;
-$BODY$
-LANGUAGE plpgsql;
+$$
+LANGUAGE SQL;
 
 
     if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta ) then 
