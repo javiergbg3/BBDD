@@ -98,15 +98,7 @@ $BODY$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
     BEFORE INSERT ON titulares
     FOR EACH ROW
-    EXECUTE FUNCTION comprobar_numeroCuentaTransferencia();
-
-
---Triger para inserción de datos en Transferencia
-CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON Transferencia
-    FOR EACH ROW
-    EXECUTE FUNCTION comprobar_numeroCuentaOpe();
-
+    EXECUTE FUNCTION comprobar_numeroCuenta();
 
 -- Función comprueba que exite el numero de cunta antes de añadirlo de transferencia
 CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger AS $BODY$
@@ -119,11 +111,11 @@ CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger
     END;
 $BODY$ LANGUAGE plpgsql;
 
---Triger para inserción de datos en Operaciones
-CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON Operaciones
+--Triger para inserción de datos en Transferencia
+CREATE OR REPLACE TRIGGER numero_cuenta_transferencia 
+    BEFORE INSERT ON Transferencia
     FOR EACH ROW
-    EXECUTE FUNCTION comprobar_numeroCuenta();
+    EXECUTE FUNCTION comprobar_numeroCuentaTransferencia();
 
 -- Función comprueba que exite el numero de cunta antes de añadirlo de Opereciones
 CREATE OR REPLACE FUNCTION comprobar_numeroCuentaOpe() RETURNS trigger AS $BODY$
@@ -136,4 +128,8 @@ CREATE OR REPLACE FUNCTION comprobar_numeroCuentaOpe() RETURNS trigger AS $BODY$
     END;
 $BODY$ LANGUAGE plpgsql;
 
-
+--Triger para inserción de datos en Operaciones
+CREATE OR REPLACE TRIGGER numero_cuenta_Operaciones 
+    BEFORE INSERT ON Operaciones
+    FOR EACH ROW
+    EXECUTE FUNCTION comprobar_numeroCuentaOpe();
