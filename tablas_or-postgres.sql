@@ -100,16 +100,6 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuentaTransferencia();
 
--- Función comprueba que exite el numero de cunta antes de añadirlo de transferencia
-CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger AS $BODY$
-    BEGIN 
-        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
-            RETURN NEW;
-        else
-            RETURN NULL;
-        end if;
-    END;
-$BODY$ LANGUAGE plpgsql;
 
 --Triger para inserción de datos en Transferencia
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
@@ -117,10 +107,11 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuentaOpe();
 
--- Función comprueba que exite el numero de cunta antes de añadirlo de Opereciones
-CREATE OR REPLACE FUNCTION comprobar_numeroCuentaOpe() RETURNS trigger AS $BODY$
+
+-- Función comprueba que exite el numero de cunta antes de añadirlo de transferencia
+CREATE OR REPLACE FUNCTION comprobar_numeroCuentaTransferencia() RETURNS trigger AS $BODY$
     BEGIN 
-        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen ) then 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_destino ) then 
             RETURN NEW;
         else
             RETURN NULL;
@@ -133,3 +124,16 @@ CREATE OR REPLACE TRIGGER numero_cuenta_titulares
     BEFORE INSERT ON Operaciones
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuenta();
+
+-- Función comprueba que exite el numero de cunta antes de añadirlo de Opereciones
+CREATE OR REPLACE FUNCTION comprobar_numeroCuentaOpe() RETURNS trigger AS $BODY$
+    BEGIN 
+        if EXISTS (select numero_cuenta FROM Cuentas WHERE cuentas.numero_cuenta = new.numero_cuenta_origen ) then 
+            RETURN NEW;
+        else
+            RETURN NULL;
+        end if;
+    END;
+$BODY$ LANGUAGE plpgsql;
+
+
