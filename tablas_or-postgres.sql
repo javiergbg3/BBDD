@@ -52,7 +52,7 @@ CREATE TABLE Corriente (
 
 --Triger para inserción de datos en Titulares
 CREATE OR REPLACE TRIGGER numero_cuenta_titulares 
-    BEFORE INSERT ON Titulares
+    BEFORE INSERT ON TABLE Titulares
     FOR EACH ROW
     EXECUTE FUNCTION comprobar_numeroCuenta();
 
