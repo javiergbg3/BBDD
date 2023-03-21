@@ -43,6 +43,6 @@ INSERT INTO Titulares (numero_cuenta, DNI_titular, interes) VALUES
     (112345678901000, '12345678A', 1.25);
 
 INSERT INTO Operaciones (fecha_hora, cantidad, numero_cuenta_origen, numero_cuenta_destino, sucursal, descripcion, tipo_operacion) VALUES
-    ('2023-03-15 10:30:00', 1000.00, 123456789012345, 456789012345678, 1001, 'Transferencia a cuenta de ahorros', 'transferencia'),
+    ('2023-03-15 10:30:00', 1000.00, 123456789012345, 456789012345678, NULL, 'Transferencia a cuenta de ahorros', 'transferencia'),
     ('2023-05-17 16:30:00', 800.00, 890123456789012, NULL, 1004, 'Nomina', 'ingreso'),
     ('2023-04-29 09:30:00', 50.00, 901234567890123, NULL, 1008, NULL, 'retirada');
