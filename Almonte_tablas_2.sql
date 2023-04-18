@@ -35,8 +35,8 @@ CREATE TABLE Item (
 
 -- Creación de tabla Tiene
 CREATE TABLE Tiene (
-    id_producto            REFERENCES Item(id_item),
-    id_establecimiento     REFERENCES Instalacion(id_instalacion),
+    id_producto            SERIAL REFERENCES Item(id_item),
+    id_establecimiento     SERIAL REFERENCES Instalacion(id_instalacion),
     PRIMARY KEY (id_producto, id_establecimiento)
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE Tiene (
 CREATE TABLE Persona (
     id_persona              SERIAL PRIMARY KEY,
     DNI                     VARCHAR(9),
-    lugar_trabajo           REFERENCES Instalacion(id_instalacion),
+    lugar_trabajo           SERIAL REFERENCES Instalacion(id_instalacion),
     nombre                  VARCHAR(30) NOT NULL,
     correo                  VARCHAR(30) NOT NULL,
     telefono                VARCHAR(20) NOT NULL,
