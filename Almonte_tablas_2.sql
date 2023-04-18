@@ -52,3 +52,4 @@ CREATE TABLE Persona (
     puntos_acumulados       INTEGER,
     cargo                   VARCHAR(30),
     nomina                  INTEGER
+);
