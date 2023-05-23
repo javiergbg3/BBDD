@@ -1,0 +1,308 @@
+CREATE TYPE ClienteUDT AS (
+    id INT,
+    nombre VARCHAR(20),
+    apellidos VARCHAR(20),
+    telefono INT,
+    compras REF(CompraUDT) ARRAY[]
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE CompraUDT AS (
+    id INT,
+    personas INT,
+    cliente REF(ClienteUDT) scope Cliente,
+    paquete REF(PaqueteUDT) scope Paquete,
+    METHOD calcularPrecio(p PaqueteUDT) RETURNS REAL
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE METHOD calcularPrecio(p PaqueteUDT) 
+RETURNS REAL FOR MenuType
+BEGIN
+    Total REAL;
+    FOR e IN p->pertenece DO
+        Total := Total + e->precio;
+    END FOR;
+    RETURN Total;
+END;
+
+CREATE TYPE PaqueteUDT AS (
+    id INT,
+    ciudad VARCHAR(20),
+    compras REF(CompraUDT) scope Compra ARRAY[],
+    Pertenece REF(PerteneceUDT) scope Pertenece ARRAY[]
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE PerteneceUDT AS (
+    precio REAL,
+    paquete REF(PaqueteUDT) scope Paquete,
+    servicio REF(PaqueteUDT) scope servicio
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE ServicioUDT AS (
+    id INT,
+    Precio_actual REAL,
+    pertenece REF(perteneceUDT) scope Pertenece
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE MonumentoUDT UNDER ServicioUDT AS (
+    NombreMonumento VARCHAR(20),
+    Descripcion VARCHAR(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    Tipo VARCHAR(20),
+    fotos REF(FotoUDT) scope Foto
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE MuseoUDT UNDER ServicioUDT AS (
+    NombreMuseo VARCHAR(20),
+    Descripcion VARCHAR(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    fotos REF(FotoUDT) scope Foto
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+
+CREATE TYPE BusUDT UNDER ServicioUDT AS (
+    NombreBus VARCHAR(20),
+    Descripcion VARCHAR(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    Duracion TIME, 
+    Frecuencia TIME
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TYPE FotoUDT AS (
+    id INT,
+    Foto VARCHAR(20),
+    Museo REF(MuseoUDT) scope Museo,
+    Monumento REF(MonumentoUDT) scope Monumento
+) INSTANTIABLE NOT FINAL REF IS SYSTEM GENERATED;
+
+CREATE TABLE Cliente OF ClienteUDT(
+    PRIMARY KEY (id),
+    nombre WITH OPTIONS NOT NULL,
+    apellidos WITH OPTIONS NOT NULL,
+    telefono WITH OPTIONS CHECK (telefono < 10 AND telefono > 8),
+    ref IS ClienteUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Compra OF CompraUDT(
+    PRIMARY KEY (id),
+    personas WITH OPTIONS NOT NULL,
+    ref IS CompraUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Paquete OF PaqueteUDT(
+    PRIMARY KEY (id),
+    ciudad WITH OPTIONS NOT NULL,
+    ref IS PaqueteUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Pertenece OF PerteneceUDT(
+    PRIMARY KEY (servicio, paquete),
+    FOREIGN KEY (servicio) REFERENCES ServicioUDT(id),
+    FOREIGN KEY (paquete) REFERENCES PaqueteUDT(id),
+    precio WITH OPTIONS NOT NULL,
+    ref IS PerteneceUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Servicio OF ServicioUDT(
+    PRIMARY KEY (id),
+    Precio_actual WITH OPTIONS NOT NULL,
+    ref IS ServicioUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Museo OF MuseoUDT(
+    PRIMARY KEY (id),
+    NombreMuseo WITH OPTIONS UNIQUE NOT NULL,
+    Descripcion WITH OPTIONS NOT NULL,
+    HoraInicio WITH OPTIONS NOT NULL,
+    HoraFinal WITH OPTIONS NOT NULL,
+    ref IS MuseoUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Monumento OF MonumentoUDT(
+    PRIMARY KEY (id),
+    NombreMonumento WITH OPTIONS UNIQUE NOT NULL,
+    Descripcion WITH OPTIONS NOT NULL,
+    HoraInicio WITH OPTIONS NOT NULL,
+    HoraFinal WITH OPTIONS NOT NULL,
+    ref IS MonumentoUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Bus OF BusUDT(
+    PRIMARY KEY (id),
+    NombreBus WITH OPTIONS UNIQUE NOT NULL,
+    Descripcion WITH OPTIONS NOT NULL,
+    HoraInicio WITH OPTIONS NOT NULL,
+    HoraFinal WITH OPTIONS NOT NULL,
+    Duracion WITH OPTIONS NOT NULL, 
+    Frecuencia WITH OPTIONS NOT NULL,
+    ref IS BusUDT SYSTEM GENERATED 
+);
+
+CREATE TABLE Foto OF FotoUDT(
+    PRIMARY KEY (id),
+    ref IS FotoUDT SYSTEM GENERATED 
+);
+
+
+
+
+
+
+
+
+CREATE OR REPLACE TYPE ClienteUDT AS OBJECT (
+    id NUMBER,
+    nombre VARCHAR2(20),
+    apellidos VARCHAR2(20),
+    telefono NUMBER,
+    compras REF(CompraUDT) ARRAY,
+    MEMBER FUNCTION calcularPrecio(p IN PaqueteUDT) RETURN NUMBER
+);
+
+CREATE OR REPLACE TYPE CompraUDT AS OBJECT (
+    id NUMBER,
+    personas NUMBER,
+    cliente REF ClienteUDT,
+    paquete REF PaqueteUDT,
+    MEMBER FUNCTION calcularPrecio(p IN PaqueteUDT) RETURN NUMBER
+);
+
+CREATE OR REPLACE TYPE BODY CompraUDT AS
+    MEMBER FUNCTION calcularPrecio(p IN PaqueteUDT) RETURN NUMBER IS
+        Total NUMBER := 0;
+    BEGIN
+        FOR i IN 1..p.pertenece.COUNT LOOP
+            Total := Total + p.pertenece(i).precio;
+        END LOOP;
+        RETURN Total;
+    END;
+END;
+
+CREATE OR REPLACE TYPE PaqueteUDT AS OBJECT (
+    id NUMBER,
+    ciudad VARCHAR2(20),
+    compras REF(CompraUDT) ARRAY,
+    pertenece REF(PerteneceUDT) ARRAY
+);
+
+CREATE OR REPLACE TYPE PerteneceUDT AS OBJECT (
+    precio NUMBER,
+    paquete REF(PaqueteUDT),
+    servicio REF(ServicioUDT)
+);
+
+CREATE OR REPLACE TYPE ServicioUDT AS OBJECT (
+    id NUMBER,
+    precio_actual NUMBER,
+    pertenece REF(PerteneceUDT)
+);
+
+CREATE OR REPLACE TYPE MonumentoUDT UNDER ServicioUDT (
+    NombreMonumento VARCHAR2(20),
+    Descripcion VARCHAR2(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    Tipo VARCHAR2(20),
+    fotos REF(FotoUDT)
+);
+
+CREATE OR REPLACE TYPE MuseoUDT UNDER ServicioUDT (
+    NombreMuseo VARCHAR2(20),
+    Descripcion VARCHAR2(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    fotos REF(FotoUDT)
+);
+
+CREATE OR REPLACE TYPE BusUDT UNDER ServicioUDT (
+    NombreBus VARCHAR2(20),
+    Descripcion VARCHAR2(200),
+    HoraInicio DATE,
+    HoraFinal DATE,
+    Duracion INTERVAL DAY TO SECOND,
+    Frecuencia INTERVAL DAY TO SECOND
+);
+
+CREATE OR REPLACE TYPE FotoUDT AS OBJECT (
+    id NUMBER,
+    Foto VARCHAR2(20),
+    Museo REF(MuseoUDT),
+    Monumento REF(MonumentoUDT)
+);
+
+CREATE TABLE Cliente OF ClienteUDT (
+    id PRIMARY KEY,
+    nombre NOT NULL,
+    apellidos NOT NULL,
+    telefono CHECK (telefono < 10 AND telefono > 8),
+    compras SCOPE IS CompraUDT ARRAY,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Compra OF CompraUDT (
+    id PRIMARY KEY,
+    personas NOT NULL,
+    cliente REFERENCES ClienteUDT,
+    paquete REFERENCES PaqueteUDT,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Paquete OF PaqueteUDT (
+    id PRIMARY KEY,
+    ciudad NOT NULL,
+    compras SCOPE IS CompraUDT ARRAY,
+    pertenece SCOPE IS PerteneceUDT ARRAY,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Pertenece OF PerteneceUDT (
+    precio NOT NULL,
+    paquete REFERENCES PaqueteUDT,
+    servicio REFERENCES ServicioUDT,
+    REF IS SYSTEM GENERATED,
+    PRIMARY KEY (servicio, paquete)
+);
+
+CREATE TABLE Servicio OF ServicioUDT (
+    id PRIMARY KEY,
+    precio_actual NOT NULL,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Museo OF MuseoUDT (
+    id PRIMARY KEY,
+    NombreMuseo NOT NULL UNIQUE,
+    Descripcion NOT NULL,
+    HoraInicio NOT NULL,
+    HoraFinal NOT NULL,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Monumento OF MonumentoUDT (
+    id PRIMARY KEY,
+    NombreMonumento NOT NULL UNIQUE,
+    Descripcion NOT NULL,
+    HoraInicio NOT NULL,
+    HoraFinal NOT NULL,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Bus OF BusUDT (
+    id PRIMARY KEY,
+    NombreBus NOT NULL UNIQUE,
+    Descripcion NOT NULL,
+    HoraInicio NOT NULL,
+    HoraFinal NOT NULL,
+    Duracion INTERVAL DAY TO SECOND NOT NULL,
+    Frecuencia INTERVAL DAY TO SECOND NOT NULL,
+    REF IS SYSTEM GENERATED
+);
+
+CREATE TABLE Foto OF FotoUDT (
+    id PRIMARY KEY,
+    Museo REFERENCES MuseoUDT,
+    Monumento REFERENCES MonumentoUDT,
+    REF IS SYSTEM GENERATED
+);
